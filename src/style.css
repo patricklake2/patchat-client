@@ -1,0 +1,88 @@
+/* Northernlands-specific styles */
+.glory .holder {
+	display: block;
+	text-align:center;
+	position: relative;
+	height: 100%;
+	padding-top: 1em;
+	padding: 1em 0;
+}
+h1 { text-align: center; }
+ul.grid li > a, ul.grid.future li > div { min-height: 236px; }
+#main ul.headshots { display: grid; grid-gap: 4px; grid-template-columns: repeat(6, 1fr); }
+#main ul.headshots li { line-height: 0px; }
+#main ul.headshots li img { width: 100%; }
+#main ul.headshots li > a { padding: 0px; min-height: auto; height: auto; }
+#main ul.sponsors { margin-bottom: 0; }
+#main .right-column ul.grid { margin-bottom: 0; }
+
+
+ul.speakers { grid-template-columns: repeat(1, 1fr); }
+ul.speakers li .person { min-height: auto; height: auto; margin-bottom: 0px; }
+ul.speakers li figure { width: 200px; float: left; margin-right: 1em; text-align: center; }
+ul.speakers li figure img, .headshot { width: 100%; filter: grayscale(100%); transition: filter 0.2s ease-in; }
+ul.speakers li figure img:hover, .headshot:hover { filter: none!important; }
+ul.speakers li p:last-child:after { content: ""; display: block; clear: both; }
+#main .right-column ul.speakers figure { width: 30%; font-size: 0.8em; }
+
+
+#talk .holder {
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: auto 3em auto;
+	grid-gap: 0.25em;
+	padding: 2em 1em;
+}
+#mezzanine > a { display: block; width: 100%; height: 100%; text-align:center; line-height: 3em; text-decoration: none; }
+#mezzanine > a:hover, #mezzanine > a:focus { background-color: black; color: white; }
+/* #comments { padding: 1em; } */
+#player { height: 360px; position: relative; }
+#player iframe { height: 100%; }
+div.youtube-embed { margin-bottom: 0; }
+#broadcast,#now-and-next { grid-column: auto; }
+.live #player { height: 360px; grid-row: auto / span 2; }
+.live #talk .holder { grid-template-columns:640px auto; }
+.columns { grid-template-columns: calc(640px - 0.75em) auto; }
+.live #broadcast, .live #now-and-next { grid-column: auto / span 2; }
+.columns {
+	display: grid;
+	grid-gap: 1em;
+}
+
+table { border-collapse: collapse; width: 100%; }
+table th { background: #FF6700; color: black; }
+table.timetable td, table.timetable th { border: 1px solid #FF6700; }
+table.timetable th:first-child, table.timetable td:first-child { width: 3em; }
+
+.main-content, #player {
+	background-image: url('https://odileeds.org/events/northernlands2/flowers-left.svg'), url('https://odileeds.org/events/northernlands2/flowers-right.svg'), url('https://odileeds.org/events/northernlands2/left.svg');
+	background-repeat: no-repeat;
+	background-size: 10%, 10%, 15%;
+	background-position: top left, bottom right, top left;
+}
+#player { background-size: 20%, 20%, 30%; }
+#player h2 { text-align: center; }
+
+.postit { position: relative; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3)); }
+.postit > div { position: relative; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2em), calc(100% - 2em) 100%, 0% 100%); height: 100%; }
+.postit > div:after { content: ""; position: absolute; bottom: 0px; right: 0px; width: 2em; height: 2em; background: rgba(0,0,0,0.2); box-shadow: -2px -1px 3px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.1); }
+.postit:nth-child(8n+1) > div { transform: rotate(-1deg); }
+.postit:nth-child(3n+1) > div { transform: rotate(2deg); }
+.postit:nth-child(8n+2) > div { transform: rotate(0.5deg); }
+.postit:nth-child(6n+2) > div { transform: rotate(-1.5deg); }
+.postit:nth-child(6n+4) > div { transform: rotate(2.5deg); }
+.postit:nth-child(8n+6) > div { transform: rotate(-2deg); }
+.postit:nth-child(12n+4) > div { transform: rotate(-0.5deg); }
+
+.postit:nth-child(8n+1) > div:after { transform: rotate(-5deg); }
+.postit:nth-child(7n+2) > div:after { transform: rotate(5deg); }
+.postit:nth-child(9n+3) > div:after { transform: rotate(2deg); }
+
+@media only screen and (max-width: 1080px) {
+	.live #talk .holder, .columns { grid-template-columns: auto; }
+	.live #broadcast, .live #now-and-next { grid-column: auto; }
+}
+@media only screen and (max-width: 700px) {
+	#main ul.headshots { grid-template-columns: repeat(3, 1fr); }
+}
+
