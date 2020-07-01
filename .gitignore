@@ -1,1 +1,4 @@
 node_modules
+docs/
+src/index.html
+src/style.css
