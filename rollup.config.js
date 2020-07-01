@@ -80,6 +80,10 @@ export default {
           src: 'src/style.css',
           dest: outputDir,
         },
+        {
+          src: 'src/assets/*',
+          dest: outputDir,
+        }
       ],
       hook: 'buildStart',
     }),
