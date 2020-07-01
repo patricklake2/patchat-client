@@ -1,7 +1,11 @@
 <template>
   <div id="patchat">
     <name-prompt v-if="displayName === ''" :setNameFunction="setName" />
-    <messages v-if="connected && displayName" :messages="messages" @reply="setReplyingTo"/>
+    <messages
+      v-if="connected && displayName"
+      :messages="messages"
+      @reply="setReplyingTo"
+    />
     <message-input
       v-if="displayName"
       :sendFunction="sendMessage"
@@ -50,14 +54,10 @@ export default {
         this.error = true;
       }
       this.client.onmessage = this.recieveMessage;
-      this.client.onerror = () => {
-
-      }
-        ([this.error, this.connected] = [true, false]);
+      this.client.onerror = () => {};
+      [this.error, this.connected] = [true, false];
     },
-    handleConnectionError() {
-
-    },
+    handleConnectionError() {},
     sendData(data) {
       this.client.send(JSON.stringify({ siteId: this.$root.siteId, ...data }));
     },
@@ -89,36 +89,37 @@ export default {
     },
     clearReplyingTo() {
       this.replyingTo = {};
-    }
+    },
   },
 };
 </script>
 
 <style>
 #patchat {
-	overflow-y: auto;
-	display: grid;
-	grid-template-columns: 100%;
-	grid-template-rows: 1fr auto;
-	box-sizing: border-box;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 1fr auto;
+  box-sizing: border-box;
 }
-#patchat input, #patchat label {
-	font-size: inherit;
-	padding: 0 0.5em;
-	margin: 0;
-	overflow: hidden;
+#patchat input,
+#patchat label {
+  font-size: inherit;
+  padding: 0 0.5em;
+  margin: 0;
+  overflow: hidden;
 }
 #patchat input {
-	line-height: 2em;
-	width: 100%;
+  line-height: 2em;
+  width: 100%;
 }
 #patchat label {
-	text-align: center;
+  text-align: center;
 }
 #patchat button {
-	line-height: 1em;
+  line-height: 1em;
 }
 #patchat form {
-	padding: 1em;	
+  padding: 1em;
 }
 </style>
