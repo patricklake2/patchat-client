@@ -9,7 +9,7 @@
         <span class="name">{{ msg.displayName }}</span>
         <span class="time">{{ getLocalTimeString(msg.msgTimestamp) }}</span>
         <span class="content">{{ decode(msg.content) }}</span>
-        <a class="replybtn" @click.prevent="$emit('reply', msg);">reply</a>
+        <button type="button" tabindex="0" class="replybtn" @click.prevent="$emit('reply', msg);">reply</button>
       </li>
     </ol>
   </ol>

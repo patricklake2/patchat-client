@@ -1,11 +1,16 @@
 <template>
   <form id="message-input">
-    <label for="messagebox" v-if="replyingTo.threadId !== undefined"
-      >You are replying to {{ replyingTo.displayName }}.
-      <a class="cancelreplybtn" @click.prevent="$emit('cancelReply')"
-        >Cancel</a
-      ></label
-    >
+    <label for="messagebox" v-if="replyingTo.threadId !== undefined">
+      You are replying to {{ replyingTo.displayName }}.
+      <button
+        type="button"
+        tabindex="0"
+        class="cancelreplybtn"
+        @click.prevent="$emit('cancelReply')"
+      >
+        Cancel
+      </button>
+    </label>
     <label class="hide" for="messagebox">Message:</label>
     <input id="messagebox" v-model="messageInput" type="text" />
     <button id="sendbutton" type="submit" @click.prevent="handleClick()">
@@ -51,11 +56,13 @@ export default {
         };
       }
     },
+  },
+  methods: {
     handleClick() {
       this.sendFunction(this.messageData);
       this.messageInput = '';
       this.$emit('cancelReply');
-    }
+    },
   },
 };
 </script>
