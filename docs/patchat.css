@@ -5,34 +5,28 @@
   padding: 0.75em;
   max-height: 308px; }
 
-#message-input {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 0.25em;
+#nameprompt {
   width: 100%;
-  margin: 10px 0 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 1em;
   flex-wrap: wrap; }
 
-#message-input label {
+#nameprompt label,
+#nameprompt input {
+  padding: 0;
+  margin: 0;
   width: 100%;
-  font-size: 0.75em;
-  padding: 0; }
+  overflow: hidden; }
 
-#message-input label a.cancelreplybtn {
-  color: blue;
-  text-decoration: underline; }
+#nameprompt label {
+  text-align: center; }
 
-#message-input label.hide {
-  position: absolute;
-  top: -9999px;
-  left: -9999px;
-  width: 0;
-  height: 0; }
-
-#message-input #messagebox {
-  height: 3em;
-  width: 75%; }
+#nameprompt input {
+  height: 3em; }
 
 #messages {
   max-height: 80%;
@@ -72,25 +66,31 @@ a.replybtn {
   align-self: center;
   font-size: 0.75em; }
 
-#nameprompt {
-  width: 100%;
-  height: 100%;
+#message-input {
   display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  gap: 1em;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.25em;
+  width: 100%;
+  margin: 10px 0 0;
   flex-wrap: wrap; }
 
-#nameprompt label,
-#nameprompt input {
-  padding: 0;
-  margin: 0;
+#message-input label {
   width: 100%;
-  overflow: hidden; }
+  font-size: 0.75em;
+  padding: 0; }
 
-#nameprompt label {
-  text-align: center; }
+#message-input label a.cancelreplybtn {
+  color: blue;
+  text-decoration: underline; }
 
-#nameprompt input {
-  height: 3em; }
+#message-input label.hide {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 0;
+  height: 0; }
+
+#message-input #messagebox {
+  height: 3em;
+  width: 75%; }

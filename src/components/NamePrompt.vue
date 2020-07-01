@@ -22,6 +22,9 @@ export default {
       default: () => () => console.error('Unimplemented set name function'),
     },
   },
+  created() {
+    this.displayName = localStorage.getItem('displayName') || '';
+  },
 };
 </script>
 

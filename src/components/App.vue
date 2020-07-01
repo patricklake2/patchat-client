@@ -1,6 +1,6 @@
 <template>
   <div id="patchat">
-    <name-prompt v-if="!displayName" :setNameFunction="setName" />
+    <name-prompt v-if="displayName === ''" :setNameFunction="setName" />
     <messages v-if="connected && displayName" :messages="messages" @reply="setReplyingTo"/>
     <message-input
       v-if="displayName"
@@ -76,6 +76,7 @@ export default {
     },
     setName(name) {
       this.displayName = name;
+      localStorage.setItem('displayName', this.displayName);
     },
     setReplyingTo(msg) {
       this.replyingTo = msg;
