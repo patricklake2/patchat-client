@@ -68,33 +68,24 @@ export default {
 </script>
 
 <style>
-#message-input {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 0.25em;
-  width: 100%;
-  margin: 10px 0 0;
-  flex-wrap: wrap;
+#patchat #message-input {
+	display: grid;
+	grid-template-columns: 80% 1fr;
+	grid-gap: 0.5em;
+	width: 100%;
 }
 #message-input label {
-  width: 100%;
-  font-size: 0.75em;
-  padding: 0;
-}
-#message-input label a.cancelreplybtn {
-  color: blue;
-  text-decoration: underline;
+	line-height: 2em;
+	grid-column: 1 / span 2;
+	font-size: 0.7em;
 }
 #message-input label.hide {
-  position: absolute;
-  top: -9999px;
-  left: -9999px;
-  width: 0;
-  height: 0;
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
 }
-#message-input #messagebox {
-  height: 3em;
-  width: 75%;
-}
+
+#message-input label a.cancelreplybtn {
+  color: blue;
+  text-decoration: underline; }
 </style>

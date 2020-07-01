@@ -32,6 +32,7 @@ export default {
       connected: false,
       error: false,
       replyingTo: {},
+      state: '',
     };
   },
   async created() {
@@ -49,8 +50,13 @@ export default {
         this.error = true;
       }
       this.client.onmessage = this.recieveMessage;
-      this.client.onerror = () =>
+      this.client.onerror = () => {
+
+      }
         ([this.error, this.connected] = [true, false]);
+    },
+    handleConnectionError() {
+
     },
     sendData(data) {
       this.client.send(JSON.stringify({ siteId: this.$root.siteId, ...data }));
@@ -89,11 +95,30 @@ export default {
 </script>
 
 <style>
-#patchat{
-  overflow: scroll;
-  background-color: white;
-  color: black;
-  padding: 0.75em;
-  max-height: 308px;
+#patchat {
+	overflow-y: auto;
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 1fr auto;
+	box-sizing: border-box;
+}
+#patchat input, #patchat label {
+	font-size: inherit;
+	padding: 0 0.5em;
+	margin: 0;
+	overflow: hidden;
+}
+#patchat input {
+	line-height: 2em;
+	width: 100%;
+}
+#patchat label {
+	text-align: center;
+}
+#patchat button {
+	line-height: 1em;
+}
+#patchat form {
+	padding: 1em;	
 }
 </style>

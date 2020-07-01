@@ -1,8 +1,10 @@
 <template>
   <form id="nameprompt">
-    <label for="displayname">Welcome to Northernlands 2! Please enter your name below</label>
+    <label for="displayname"
+      >Welcome to Northernlands 2! Please enter your name below</label
+    >
     <input id="displayname" v-model="displayName" type="text" />
-    <button type="button" @click="setNameFunction(displayName)">
+    <button type="submit" @click.prevent="setNameFunction(displayName)">
       Enter chat
     </button>
   </form>
