@@ -4,10 +4,15 @@
       <li
         v-for="(msg, i) in thread"
         :key="i"
-        :class="{ message: true, reply: i > 0 }"
+        :class="{
+          message: true,
+          reply: i > 0,
+          question:
+            msg.hasOwnProperty('flags') && msg.flags.includes('question'),
+        }"
       >
         <span class="name">{{ msg.displayName }}</span>
-        <span class="time">{{ getLocalTimeString(msg.msgTimestamp) }}</span>
+        <span class="time">{{ getLocalDateTime(msg.msgTimestamp) }}</span>
         <span class="content">{{ decode(msg.content) }}</span>
         <button
           type="button"
@@ -23,6 +28,8 @@
 </template>
 
 <script>
+import Vue from 'vue/dist/vue.runtime.esm';
+
 export default {
   name: 'Messages',
   props: {
@@ -31,9 +38,13 @@ export default {
       default: () => [],
     },
   },
+  watch: {
+    messages() {
+      Vue.nextTick(this.scrollToBottom);
+    },
+  },
   mounted() {
-    const messageList = this.$refs.messages;
-    messageList.scrollTop = messageList.scrollHeight;
+    this.scrollToBottom();
   },
   computed: {
     threads() {
@@ -54,15 +65,31 @@ export default {
     },
   },
   methods: {
-    getLocalTimeString(utcTimestamp) {
-      const date = new Date(0);
-      date.setUTCMilliseconds(utcTimestamp);
-      const hours = `${date.getHours()}`.padStart(2, '0');
-      const mins = `${date.getMinutes()}`.padStart(2, '0');
-      return `${hours}:${mins}`;
+    getLocalDateTime(utcTimestamp) {
+      const msgDate = new Date(0);
+      msgDate.setUTCMilliseconds(utcTimestamp);
+      const hours = `${msgDate.getHours()}`.padStart(2, '0');
+      const mins = `${msgDate.getMinutes()}`.padStart(2, '0');
+      const timeString = `${hours}:${mins}`;
+
+      const year = msgDate.getFullYear();
+      const month = msgDate.getMonth();
+      const day = msgDate.getDate();
+      let dateString = '';
+
+      const now = new Date();
+      if (now.getFullYear() === year && now.getMonth() === month) {
+        if (now.getDate() === day) dateString = '';
+        else if ((now.getDate() - 1) === day) dateString = 'yesterday';
+      } else dateString = `${day}/${month}`;
+      return `${dateString} ${timeString}`
     },
     decode(data) {
       return atob(data);
+    },
+    scrollToBottom() {
+      const messageList = this.$refs.messages;
+      messageList.scrollTop = messageList.scrollHeight;
     },
   },
 };

@@ -1,6 +1,9 @@
 <template>
   <form id="message-input">
-    <label for="messagebox" v-if="replyingTo.threadId !== undefined">
+    <label
+      for="messagebox"
+      v-if="replyingTo.threadId !== undefined"
+    >
       You are replying to {{ replyingTo.displayName }}.
       <button
         type="button"
@@ -20,8 +23,10 @@
     >
       Send
     </button>
-    <input id="flagAsQuestion" type="checkbox" v-model="flagAsQuestion" />
-    <label for="flagAsQuestion">This is a question for the Q&A session</label>
+    <div class="checkboxHolder">
+      <label for="flagAsQuestion">This is a question for the Q&A session</label>
+      <input id="flagAsQuestion" type="checkbox" v-model="flagAsQuestion" />
+    </div>
   </form>
 </template>
 
@@ -84,5 +89,20 @@ export default {
 #message-input label a.cancelreplybtn {
   color: blue;
   text-decoration: underline;
+}
+#message-input .checkboxHolder {
+  grid-column: 1 / span 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+#message-input .checkboxHolder label, input {
+  margin: 0;
+  display: inline-block;
+  padding: 0;
+}
+#message-input .checkboxHolder input {
+  width: 20px;
 }
 </style>
