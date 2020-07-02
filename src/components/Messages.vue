@@ -1,5 +1,5 @@
 <template>
-  <ol id="messages">
+  <ol id="messages" ref="messages">
     <ol class="thread" v-for="(thread, idx) in threads" :key="idx">
       <li
         v-for="(msg, i) in thread"
@@ -30,6 +30,10 @@ export default {
       type: Array,
       default: () => [],
     },
+  },
+  mounted() {
+    const messageList = this.$refs.messages;
+    messageList.scrollTop = messageList.scrollHeight;
   },
   computed: {
     threads() {

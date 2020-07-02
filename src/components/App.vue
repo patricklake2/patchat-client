@@ -1,13 +1,13 @@
 <template>
   <div id="patchat">
-    <name-prompt v-if="displayName === ''" @setName="setName" />
+    <name-prompt v-if="!displayName" @setName="setName" />
     <loading-screen
       v-else-if="currentState !== states.CONNECTED"
       :states="states"
       :currentState="currentState"
       @retry="reset()"
     />
-    <div v-else>
+    <template v-else>
       <messages :messages="messages" @reply="setReplyingTo" />
       <message-input
         :sendFunction="sendMessage"
@@ -15,7 +15,7 @@
         :replyingTo="replyingTo"
         @send="sendMessage"
       />
-    </div>
+    </template>
   </div>
 </template>
 
@@ -124,7 +124,8 @@ export default {
 
 <style>
 #patchat {
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  overflow: hidden;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: 1fr auto;
