@@ -9,7 +9,14 @@
         <span class="name">{{ msg.displayName }}</span>
         <span class="time">{{ getLocalTimeString(msg.msgTimestamp) }}</span>
         <span class="content">{{ decode(msg.content) }}</span>
-        <button type="button" tabindex="0" class="replybtn" @click.prevent="$emit('reply', msg);">reply</button>
+        <button
+          type="button"
+          tabindex="0"
+          class="replybtn"
+          @click.prevent="$emit('reply', msg)"
+        >
+          reply
+        </button>
       </li>
     </ol>
   </ol>
@@ -59,48 +66,62 @@ export default {
 
 <style>
 #messages {
-	overflow-y: auto;
-	overflow-x: hidden;
-	max-width: 100%;
-	min-height: 0;
-	padding: 1em;
-	margin: 0 !important;
-	margin-bottom: 0.5em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 100%;
+  min-height: 0;
+  padding: 1em;
+  margin: 0 !important;
+  margin-bottom: 0.5em;
 }
 
 li.message {
-	list-style-type: none;
-	padding: 0.25em 0;
-	margin: 0;
-	color: black;
-	width: 100%;
-	max-width: 100%;
-	border-bottom: 0.5px solid lightgrey;
-	position: relative;
-	display: grid;
-	grid-template-columns: 1fr auto;
+  list-style-type: none;
+  padding: 0.25em 0;
+  margin: 0;
+  color: black;
+  width: 100%;
+  max-width: 100%;
+  border-bottom: 0.5px solid lightgrey;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
 }
-li.message:first-child { padding-top: 0; }
+li.message:first-child {
+  padding-top: 0;
+}
 .message.reply {
-	padding-left: 2em;
-	background-image: url('indent.svg');
-	background-position: 0.5em 0.25em;
-	background-size: 1em;
-	background-repeat: no-repeat;
+  padding-left: 2em;
+  background-image: url('indent.svg');
+  background-position: 0.5em 0.25em;
+  background-size: 1em;
+  background-repeat: no-repeat;
 }
 .message .replybtn {
-	display: inline-block;
-	padding: 0.25em 0;
-	margin: 0;
-	text-align: center;
-	background: transparent;
-	color: inherit;
-	border: 0px;
-	text-decoration: underline!important;
-	cursor: pointer;
+  display: inline-block;
+  padding: 0.25em 0;
+  margin: 0;
+  text-align: center;
+  background: transparent;
+  color: inherit;
+  border: 0px;
+  text-decoration: underline !important;
+  cursor: pointer;
 }
-.message .time { text-align: right; }
-.message .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.message .name, .message .time, .message .replybtn { font-size: 0.75em; }
-.message .content { display: block; }
+.message .time {
+  text-align: right;
+}
+.message .name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.message .name,
+.message .time,
+.message .replybtn {
+  font-size: 0.75em;
+}
+.message .content {
+  display: block;
+}
 </style>

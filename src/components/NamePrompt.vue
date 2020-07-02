@@ -4,7 +4,7 @@
       >Welcome to Northernlands 2! Please enter your name below</label
     >
     <input id="displayname" v-model="displayName" type="text" />
-    <button type="submit" @click.prevent="setNameFunction(displayName)">
+    <button type="submit" @click.prevent="$emit('setName', displayName)">
       Enter chat
     </button>
   </form>

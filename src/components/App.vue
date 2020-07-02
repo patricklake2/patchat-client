@@ -1,67 +1,94 @@
 <template>
   <div id="patchat">
-    <name-prompt v-if="displayName === ''" :setNameFunction="setName" />
-    <messages
-      v-if="connected && displayName"
-      :messages="messages"
-      @reply="setReplyingTo"
+    <name-prompt v-if="displayName === ''" @setName="setName" />
+    <loading-screen
+      v-else-if="currentState !== states.CONNECTED"
+      :states="states"
+      :currentState="currentState"
+      @retry="reset()"
     />
-    <message-input
-      v-if="displayName"
-      :sendFunction="sendMessage"
-      :displayName="displayName"
-      :replyingTo="replyingTo"
-      @cancelReply="clearReplyingTo"
-    />
+    <div v-else>
+      <messages :messages="messages" @reply="setReplyingTo" />
+      <message-input
+        :sendFunction="sendMessage"
+        :displayName="displayName"
+        :replyingTo="replyingTo"
+        @send="sendMessage"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { createClient } from '../utils/websocket-client';
+import LoadingScreen from './LoadingScreen.vue';
 import MessageInput from './MessageInput.vue';
 import Messages from './Messages.vue';
 import NamePrompt from './NamePrompt.vue';
 
 export default {
   components: {
-    Messages,
+    LoadingScreen,
     MessageInput,
+    Messages,
     NamePrompt,
   },
   data() {
+    const states = {
+      CONNECTED: 'connected',
+      CONNECTING: 'connecting',
+      ERROR: 'error',
+      RECONNECTING: 'reconnecting',
+    };
     return {
+      states,
       client: null,
       messages: [],
       displayName: '',
-      connected: false,
-      error: false,
       replyingTo: {},
-      state: '',
+      currentState: states.CONNECTING,
+      timeout: 250,
+      maxTimeout: 10000,
     };
   },
-  async created() {
-    await this.initialise();
+  mounted() {
+    this.initialise();
   },
   methods: {
-    async initialise() {
-      try {
-        this.client = await createClient(this.$root.siteId);
-        this.connected = true;
-        this.messages = [];
-        this.requestPreviousMessages();
-      } catch (err) {
-        this.connected = false;
-        this.error = true;
-      }
+    initialise() {
+      this.timeout *= 2;
+      const url = `wss://nugm59x1e1.execute-api.eu-west-2.amazonaws.com/dev?siteId=${this.$root.siteId}`;
+      this.client = new WebSocket(url);
       this.client.onmessage = this.recieveMessage;
-      this.client.onerror = () => {};
-      [this.error, this.connected] = [true, false];
+      this.client.onopen = () => {
+        console.log('open');
+        this.currentState = this.states.CONNECTED;
+        this.requestPreviousMessages();
+      };
+      this.client.onclose = this.retry;
+      this.client.onerror = () => this.client.close();
     },
-    handleConnectionError() {},
+    retry() {
+      if (this.timeout <= this.maxTimeout) {
+        this.currentState = this.states.RECONNECTING;
+        setTimeout(this.initialise, this.timeout);
+      } else {
+        this.currentState = this.states.ERROR;
+      }
+    },
+    reset() {
+      this.timeout = 250;
+      this.initialise();
+    },
     sendData(data) {
-      this.client.send(JSON.stringify({ siteId: this.$root.siteId, ...data }));
+      if (this.client.readyState === WebSocket.OPEN) {
+        console.log('sending data');
+        this.client.send(
+          JSON.stringify({ siteId: this.$root.siteId, ...data })
+        );
+      } else this.retry();
     },
     requestPreviousMessages() {
+      console.log('requesting msgs');
       this.sendData({ action: 'getmessages' });
     },
     sendMessage(messageData) {
@@ -69,6 +96,7 @@ export default {
         action: 'sendmessage',
         message: messageData,
       });
+      this.clearReplyingTo();
     },
     recieveMessage(e) {
       console.log(e);

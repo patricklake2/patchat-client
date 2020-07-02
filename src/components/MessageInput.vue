@@ -13,9 +13,15 @@
     </label>
     <label class="hide" for="messagebox">Message:</label>
     <input id="messagebox" v-model="messageInput" type="text" />
-    <button id="sendbutton" type="submit" @click.prevent="handleClick()">
+    <button
+      id="sendbutton"
+      type="submit"
+      @click.prevent="sendBtnClickHandler()"
+    >
       Send
     </button>
+    <input id="flagAsQuestion" type="checkbox" v-model="flagAsQuestion" />
+    <label for="flagAsQuestion">This is a question for the Q&A session</label>
   </form>
 </template>
 
@@ -25,13 +31,10 @@ export default {
   data() {
     return {
       messageInput: '',
+      flagAsQuestion: false,
     };
   },
   props: {
-    sendFunction: {
-      type: Function,
-      default: () => () => console.error('Send function not implemented'),
-    },
     displayName: {
       type: String,
       default: () => '',
@@ -43,25 +46,18 @@ export default {
   },
   computed: {
     messageData() {
-      if (this.replyingTo.threadId !== undefined) {
-        return {
-          threadId: this.replyingTo.threadId,
-          content: btoa(this.messageInput),
-          displayName: this.displayName,
-        };
-      } else {
-        return {
-          content: btoa(this.messageInput),
-          displayName: this.displayName,
-        };
-      }
+      return {
+        threadId: this.replyingTo.threadId || '',
+        content: btoa(this.messageInput),
+        displayName: this.displayName,
+        flags: this.flagAsQuestion ? ['question'] : [],
+      };
     },
   },
   methods: {
-    handleClick() {
-      this.sendFunction(this.messageData);
+    sendBtnClickHandler() {
+      this.$emit('send', this.messageData);
       this.messageInput = '';
-      this.$emit('cancelReply');
     },
   },
 };
@@ -69,23 +65,24 @@ export default {
 
 <style>
 #patchat #message-input {
-	display: grid;
-	grid-template-columns: 80% 1fr;
-	grid-gap: 0.5em;
-	width: 100%;
+  display: grid;
+  grid-template-columns: 80% 1fr;
+  grid-gap: 0.5em;
+  width: 100%;
 }
 #message-input label {
-	line-height: 2em;
-	grid-column: 1 / span 2;
-	font-size: 0.7em;
+  line-height: 2em;
+  grid-column: 1 / span 2;
+  font-size: 0.7em;
 }
 #message-input label.hide {
-	position: absolute;
-	top: -9999px;
-	left: -9999px;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
 }
 
 #message-input label a.cancelreplybtn {
   color: blue;
-  text-decoration: underline; }
+  text-decoration: underline;
+}
 </style>
