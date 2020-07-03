@@ -48,15 +48,23 @@ export default {
   },
   computed: {
     threads() {
+      let messagesToShow;
+      const rawQueryParams = window.location.search.toLowerCase();
+      const queryParams = new URLSearchParams(rawQueryParams);
+      if (!queryParams.has('questions')) messagesToShow = this.messages;
+      else
+        messagesToShow = this.messages.filter(
+          (msg) => msg.hasOwnProperty('flags') && msg.flags.includes('question')
+        );
       // Get all thread IDs then find the unique ones
-      const threadIds = this.messages.map((msg) => msg.threadId);
+      const threadIds = messagesToShow.map((msg) => msg.threadId);
       const uniqueThreadIds = threadIds.filter(
         (id, index, arr) => arr.indexOf(id) === index
       );
 
       // Create array of threads
       const threads = uniqueThreadIds.map((id) => {
-        const messagesInThread = this.messages.filter(
+        const messagesInThread = messagesToShow.filter(
           (msg) => msg.threadId === id
         );
         return messagesInThread.sort((a, b) => a.timestamp - b.timestamp); // sort messages within thread
@@ -75,14 +83,14 @@ export default {
       const year = msgDate.getFullYear();
       const month = msgDate.getMonth();
       const day = msgDate.getDate();
-      let dateString = '';
+      let dateString = `${day}/${month}`;;
 
       const now = new Date();
       if (now.getFullYear() === year && now.getMonth() === month) {
         if (now.getDate() === day) dateString = '';
-        else if ((now.getDate() - 1) === day) dateString = 'yesterday';
-      } else dateString = `${day}/${month}`;
-      return `${dateString} ${timeString}`
+        else if (now.getDate() - 1 === day) dateString = 'yesterday';
+      }
+      return `${dateString} ${timeString}`;
     },
     decode(data) {
       return atob(data);
