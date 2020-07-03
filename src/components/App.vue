@@ -13,6 +13,7 @@
         :sendFunction="sendMessage"
         :displayName="displayName"
         :replyingTo="replyingTo"
+        @cancelReply="clearReplyingTo"
         @send="sendMessage"
       />
     </template>
