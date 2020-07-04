@@ -63,6 +63,7 @@ export default {
       this.client.onopen = () => {
         console.log('open');
         this.currentState = this.states.CONNECTED;
+        this.messages = [];
         this.requestPreviousMessages();
       };
       this.client.onclose = this.retry;
