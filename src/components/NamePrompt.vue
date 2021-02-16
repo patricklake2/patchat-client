@@ -1,8 +1,13 @@
 <template>
   <form id="nameprompt">
-    <label for="displayname"
-      >Welcome to Northernlands 2! Please enter your name below</label
-    >
+    <label for="displayname">
+      <template v-if="$root.opts.welcomeMsg">{{
+        $root.opts.welcomeMsg
+      }}</template>
+      <template v-else>Welcome!</template>
+      <br />
+      Please enter your name below:
+    </label>
     <input id="displayname" v-model="displayName" type="text" />
     <button type="submit" @click.prevent="$emit('setName', displayName)">
       Enter chat

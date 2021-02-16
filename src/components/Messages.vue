@@ -14,14 +14,16 @@
         <span class="name">{{ msg.displayName }}</span>
         <span class="time">{{ getLocalDateTime(msg.msgTimestamp) }}</span>
         <span class="content">{{ decode(msg.content) }}</span>
-        <button
-          type="button"
-          tabindex="0"
-          class="replybtn"
-          @click.prevent="$emit('reply', msg)"
-        >
-          reply
-        </button>
+        <div class="buttons">
+          <button
+            type="button"
+            tabindex="0"
+            class="replybtn"
+            @click.prevent="$emit('reply', msg)"
+          >
+            reply
+          </button>
+        </div>
       </li>
     </ol>
   </ol>
@@ -54,18 +56,18 @@ export default {
       if (!queryParams.has('questions')) messagesToShow = this.messages;
       else
         messagesToShow = this.messages.filter(
-          (msg) => msg.hasOwnProperty('flags') && msg.flags.includes('question')
+          msg => msg.hasOwnProperty('flags') && msg.flags.includes('question')
         );
       // Get all thread IDs then find the unique ones
-      const threadIds = messagesToShow.map((msg) => msg.threadId);
+      const threadIds = messagesToShow.map(msg => msg.threadId);
       const uniqueThreadIds = threadIds.filter(
         (id, index, arr) => arr.indexOf(id) === index
       );
 
       // Create array of threads
-      const threads = uniqueThreadIds.map((id) => {
+      const threads = uniqueThreadIds.map(id => {
         const messagesInThread = messagesToShow.filter(
-          (msg) => msg.threadId === id
+          msg => msg.threadId === id
         );
         return messagesInThread.sort((a, b) => a.timestamp - b.timestamp); // sort messages within thread
       });
@@ -83,7 +85,7 @@ export default {
       const year = msgDate.getFullYear();
       const month = msgDate.getMonth();
       const day = msgDate.getDate();
-      let dateString = `${day}/${month}`;;
+      let dateString = `${day}/${month}`;
 
       const now = new Date();
       if (now.getFullYear() === year && now.getMonth() === month) {
@@ -136,7 +138,7 @@ li.message:first-child {
   background-size: 1em;
   background-repeat: no-repeat;
 }
-.message .replybtn {
+.message .buttons button {
   display: inline-block;
   padding: 0.25em 0;
   margin: 0;
@@ -157,7 +159,7 @@ li.message:first-child {
 }
 .message .name,
 .message .time,
-.message .replybtn {
+.message .buttons button {
   font-size: 0.75em;
 }
 .message .content {

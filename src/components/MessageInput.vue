@@ -1,9 +1,6 @@
 <template>
   <form id="message-input">
-    <label
-      for="messagebox"
-      v-if="replyingTo.threadId !== undefined"
-    >
+    <label for="messagebox" v-if="replyingTo.threadId !== undefined">
       You are replying to {{ replyingTo.displayName }}.
       <button
         type="button"
@@ -15,11 +12,17 @@
       </button>
     </label>
     <label class="hide" for="messagebox">Message:</label>
-    <input id="messagebox" v-model="messageInput" type="text" />
+    <input
+      id="messagebox"
+      v-model="messageInput"
+      type="text"
+      :disabled="!enabled"
+    />
     <button
       id="sendbutton"
       type="submit"
       @click.prevent="sendBtnClickHandler()"
+      :disabled="!enabled"
     >
       Send
     </button>
@@ -47,6 +50,10 @@ export default {
     replyingTo: {
       type: Object,
       default: () => null,
+    },
+    enabled: {
+      type: Boolean,
+      default: () => true,
     },
   },
   computed: {
@@ -97,7 +104,8 @@ export default {
   justify-content: center;
   gap: 0.5em;
 }
-#message-input .checkboxHolder label, input {
+#message-input .checkboxHolder label,
+input {
   margin: 0;
   display: inline-block;
   padding: 0;
